@@ -1,13 +1,9 @@
 import functools
-import warnings
 from queue import PriorityQueue
-from typing import Tuple
 
 import numpy as np
 import scipy.io.wavfile as wav
 import scipy.signal
-
-from .config import ADVI_CONFIG
 
 iso226_base = 40
 iso226_freq = np.array([
@@ -72,12 +68,12 @@ def det_width(power, volume, minimum):
     return width
 
 
-def convert(config: ADVI_CONFIG):
+def convert(config):
     active_height = config.height - 2 * config.height_pad
     active_width = config.width - 2 * config.width_pad
     active_color = np.asarray(config.color, dtype=np.uint8)
 
-    samplerate, samples = wav.read(config.input_file)
+    samplerate, samples = wav.read(config.input)
     if len(samples.shape) > 1:
         samples = samples[..., 0]
     frequencies, times, spectrogram = scipy.signal.stft(
@@ -108,6 +104,7 @@ def convert(config: ADVI_CONFIG):
 
     arr = np.zeros((config.height, config.width, 3), dtype=np.uint8)
     try:
+        assert not config.quite
         import tqdm
 
         RNG = tqdm.trange(F_power.shape[1])

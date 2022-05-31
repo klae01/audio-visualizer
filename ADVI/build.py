@@ -1,12 +1,12 @@
-import av
 import os
 
+import av
+
 from .visualize import convert as v_convert
-from .config import ADVI_CONFIG
 
 
-def convert(config: ADVI_CONFIG):
-    output = av.open(config.output_file, "w")
+def convert(config):
+    output = av.open(config.output, "w")
     ovstream = output.add_stream("libx264rgb", config.fps)
     ovstream.pix_fmt = "rgb24"
     ovstream.width = config.width
@@ -21,7 +21,7 @@ def convert(config: ADVI_CONFIG):
     for img_packet in v_frames:
         output.mux(img_packet)
 
-    container = av.open(config.input_file, "r")
+    container = av.open(config.input, "r")
     stream = container.streams.audio[0]
     for packet in container.demux((stream,)):
         for frame in packet.decode():
@@ -32,4 +32,4 @@ def convert(config: ADVI_CONFIG):
     output.mux(oastream.encode())
     output.close()
 
-    # os.system(f"ffmpeg -i intermediate.mp4 -i {config.input_file} -c:v copy -c:a aac {config.output_file} && rm intermediate.mp4 ")
+    # os.system(f"ffmpeg -i intermediate.mp4 -i {config.input} -c:v copy -c:a aac {config.output} && rm intermediate.mp4 ")
