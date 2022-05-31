@@ -13,7 +13,7 @@ from setuptools import find_packages, setup, Command, Extension
 
 # Package meta-data.
 NAME = 'ADVI'
-DESCRIPTION = 'The handy tool to visualize audio'
+DESCRIPTION = 'The handy tool to visualize your audio'
 URL = 'https://github.com/klae01/audio-visualizer'
 EMAIL = 'tspt2479@gmail.com'
 AUTHOR = 'klae01'
@@ -118,7 +118,7 @@ setup(
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
-    license='MIT',
+    license='GPLv3',
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
